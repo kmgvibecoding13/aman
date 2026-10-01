@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вайб·Код — школа вайб-кодинга</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4ECDF;
+    --bg-stripe:#EFE4D2;
+    --surface:#FBF7F0;
+    --sand:#E8DCC8;
+    --border:#E2D3BC;
+    --accent:#8A4F2B;
+    --accent-dark:#6E3E20;
+    --text:#2A2019;
+    --muted:#5E4C3D;
+    --dark:#3A2C22;
+    --radius-card:26px;
+    --radius-pill:999px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    margin:0 0 .4em;
+    color:var(--text);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 12px;
+  }
+  p{margin:0 0 1em;color:var(--muted);}
+  a{color:inherit;}
+  .container{max-width:1180px;margin:0 auto;padding:0 32px;}
+  section{padding:96px 0;}
+  .stripe{background:var(--bg-stripe);}
+  img,svg{display:block;max-width:100%;}
+
+  /* focus visibility */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
+    outline:3px solid var(--accent);
+    outline-offset:2px;
+  }
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    height:54px;padding:0 30px;border-radius:var(--radius-pill);
+    font-family:'Manrope',sans-serif;font-weight:700;font-size:16px;
+    border:2px solid transparent;cursor:pointer;text-decoration:none;
+    transition:transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+    min-height:48px;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover{background:var(--accent-dark);}
+  .btn-outline{background:transparent;color:var(--accent);border-color:var(--accent);}
+  .btn-outline:hover{background:var(--sand);}
+  .btn-dark{background:var(--dark);color:#fff;}
+  .btn-ghost{background:var(--sand);color:var(--text);}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,236,223,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;max-width:1180px;margin:0 auto;
+  }
+  .logo{
+    font-family:'Playfair Display',serif;font-weight:700;font-size:22px;
+    text-decoration:none;color:var(--text);
+  }
+  .logo span{color:var(--accent);}
+  .menu{
+    list-style:none;display:flex;gap:28px;margin:0;padding:0;
+    flex-wrap:wrap;
+  }
+  .menu a{
+    text-decoration:none;font-weight:600;font-size:15px;color:var(--text);
+    padding:8px 2px;border-bottom:2px solid transparent;
+  }
+  .menu a:hover{border-color:var(--accent);}
+  .nav-actions{display:flex;align-items:center;gap:16px;}
+  .menu-toggle{display:none;background:none;border:none;padding:10px;cursor:pointer;}
+  .menu-toggle svg{width:26px;height:26px;}
+
+  /* Hero */
+  .hero{padding:110px 0 90px;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;}
+  .badges{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 28px;}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--sand);border:1px solid var(--border);
+    border-radius:var(--radius-pill);padding:10px 18px;
+    font-size:14px;font-weight:600;color:var(--accent-dark);
+  }
+  .hero h1{font-size:48px;line-height:1.15;}
+  .hero .sub{font-size:18px;max-width:520px;}
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px;}
+
+  /* Chat illustration */
+  .chat-card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius-card);padding:28px;
+    box-shadow:0 24px 48px -24px rgba(58,44,34,.25);
+  }
+  .chat-card .dots{display:flex;gap:6px;margin-bottom:18px;}
+  .chat-card .dots span{width:10px;height:10px;border-radius:50%;background:var(--border);}
+  .bubble{
+    max-width:82%;padding:14px 18px;border-radius:20px;margin-bottom:14px;
+    font-size:15px;line-height:1.5;
+  }
+  .bubble.user{
+    background:var(--sand);margin-left:auto;border-bottom-right-radius:6px;color:var(--text);
+  }
+  .bubble.ai{
+    background:var(--dark);color:#F4ECDF;border-bottom-left-radius:6px;
+  }
+  .bubble .tag{
+    display:block;font-family:'JetBrains Mono',monospace;font-size:11px;
+    text-transform:uppercase;letter-spacing:.06em;opacity:.7;margin-bottom:4px;
+  }
+
+  /* Section heading */
+  .section-head{max-width:640px;margin:0 auto 56px;text-align:center;}
+  .section-head h2{font-size:36px;}
+  .section-head.left{margin:0 0 56px;text-align:left;}
+
+  /* Grid cards generic */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius-card);padding:32px;
+  }
+  .icon-circle{
+    width:56px;height:56px;border-radius:50%;background:var(--sand);
+    display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+    color:var(--accent);
+  }
+  .card h3{font-size:20px;}
+  .card ul{margin:0;padding-left:0;list-style:none;}
+  .card ul li{margin-bottom:6px;color:var(--muted);}
+
+  /* Program */
+  .program-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .module{
+    display:flex;gap:18px;background:var(--surface);border:1px solid var(--border);
+    border-radius:22px;padding:24px;
+  }
+  .module .num{
+    font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);
+    font-size:22px;flex-shrink:0;width:40px;
+  }
+  .module h4{font-size:17px;margin-bottom:6px;}
+  .module p{margin:0;font-size:15px;}
+  .program-meta{
+    display:flex;gap:32px;flex-wrap:wrap;margin-top:36px;padding:24px 28px;
+    background:var(--sand);border-radius:22px;
+  }
+  .program-meta div strong{display:block;font-family:'JetBrains Mono',monospace;color:var(--accent-dark);font-size:14px;}
+
+  /* Format */
+  .format-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  .format-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-card);
+    padding:36px;
+  }
+  .format-card ul{padding-left:20px;margin:16px 0 0;color:var(--muted);}
+  .format-card ul li{margin-bottom:8px;}
+
+  /* Coaches */
+  .avatar{
+    width:88px;height:88px;border-radius:50%;background:var(--sand);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:var(--accent-dark);
+    margin-bottom:20px;
+  }
+  .coach-role{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);
+    text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;
+  }
+
+  /* Pricing */
+  .price-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-card);
+    padding:36px;display:flex;flex-direction:column;position:relative;transition:background .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .price-card.popular{border-color:var(--accent);}
+  .price-tag{
+    position:absolute;top:-14px;left:32px;background:var(--accent);color:#fff;
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+    padding:6px 14px;border-radius:var(--radius-pill);
+  }
+  .price{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;margin:12px 0 20px;}
+  .price small{font-family:'Manrope',sans-serif;font-size:15px;font-weight:600;color:var(--muted);}
+  .price-card ul{list-style:none;padding:0;margin:0 0 28px;flex-grow:1;}
+  .price-card ul li{
+    padding-left:26px;position:relative;margin-bottom:12px;color:var(--muted);font-size:15px;
+  }
+  .price-card ul li::before{
+    content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;
+  }
+  .price-card.selected{background:var(--dark);border-color:var(--dark);}
+  .price-card.selected h3,.price-card.selected .price{color:#fff;}
+  .price-card.selected ul li{color:#E8DCC8;}
+  .price-card.selected ul li::before{color:#F4ECDF;}
+  .price-card.selected .price small{color:#cbb99f;}
+  .select-btn{width:100%;}
+
+  /* Reviews */
+  .review-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-card);
+    padding:32px;
+  }
+  .review-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .review-head .avatar{width:52px;height:52px;font-size:16px;margin:0;}
+  .review-meta strong{display:block;font-size:15px;}
+  .review-meta span{font-size:13px;color:var(--muted);}
+  .quote{font-style:normal;color:var(--text);}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--border);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center;gap:20px;
+    padding:22px 4px;font-family:'Manrope',sans-serif;font-weight:700;font-size:17px;color:var(--text);
+    min-height:48px;
+  }
+  .faq-q .plus{
+    flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--sand);
+    display:flex;align-items:center;justify-content:center;color:var(--accent);
+    font-size:18px;transition:transform .2s ease;
+  }
+  .faq-q[aria-expanded="true"] .plus{transform:rotate(45deg);}
+  .faq-a{
+    max-height:0;overflow:hidden;transition:max-height .25s ease;
+  }
+  .faq-a p{padding:0 4px 22px;margin:0;font-size:15px;}
+
+  /* Signup */
+  .signup-wrap{
+    background:var(--surface);border:1px solid var(--border);border-radius:32px;
+    padding:48px;display:grid;grid-template-columns:1fr 1.2fr;gap:48px;
+  }
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-weight:600;font-size:14px;margin-bottom:8px;}
+  .field input,.field select{
+    width:100%;height:52px;border-radius:14px;border:1px solid var(--border);
+    background:var(--bg);padding:0 16px;font-family:'Manrope',sans-serif;font-size:16px;color:var(--text);
+  }
+  .radio-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .radio-pill{
+    flex:1;min-width:110px;text-align:center;
+  }
+  .radio-pill input{position:absolute;opacity:0;width:0;height:0;}
+  .radio-pill label{
+    display:flex;align-items:center;justify-content:center;height:48px;
+    border:1px solid var(--border);border-radius:var(--radius-pill);
+    background:var(--bg);font-weight:600;font-size:14px;cursor:pointer;margin:0;
+    transition:background .15s ease,color .15s ease,border-color .15s ease;
+  }
+  .radio-pill input:checked + label{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .tariff-box{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    background:var(--sand);border-radius:16px;padding:16px 20px;margin-bottom:24px;
+  }
+  .tariff-box strong{font-size:15px;}
+  .tariff-box button{
+    background:none;border:none;color:var(--accent);font-weight:700;cursor:pointer;
+    text-decoration:underline;font-size:14px;padding:8px;
+  }
+  #formMessage{margin-top:8px;font-weight:600;}
+  #formMessage.error{color:#8A2B2B;}
+  #formMessage.success{color:#2B6A3F;}
+
+  /* Contacts */
+  .contacts-section{background:var(--dark);color:#F4ECDF;}
+  .contacts-section .eyebrow{color:#E8B98A;}
+  .contacts-section h2{color:#fff;}
+  .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;}
+  .contact-list{list-style:none;padding:0;margin:0 0 28px;}
+  .contact-list li{
+    display:flex;gap:14px;align-items:flex-start;margin-bottom:18px;font-size:15px;color:#E8DCC8;
+  }
+  .contact-list a{color:#fff;text-decoration:none;font-weight:600;}
+  .contact-list a:hover{text-decoration:underline;}
+  .social-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;}
+  .social-btn{
+    display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 22px;
+    border-radius:var(--radius-pill);background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-weight:600;font-size:14px;
+  }
+  .social-btn:hover{background:rgba(255,255,255,.16);}
+  footer{
+    border-top:1px solid rgba(255,255,255,.15);margin-top:56px;padding-top:28px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:14px;color:#cbb99f;
+  }
+  footer a{color:#F4ECDF;text-decoration:none;font-weight:600;}
+  .back-to-top{display:inline-flex;align-items:center;gap:6px;}
+
+  @media (max-width:900px){
+    .menu{display:none;}
+    .menu-toggle{display:inline-flex;}
+    .hero-grid,.format-grid,.contact-grid{grid-template-columns:1fr;}
+    .grid-3,.program-grid{grid-template-columns:1fr;}
+    .signup-wrap{grid-template-columns:1fr;padding:32px;}
+    .hero h1{font-size:36px;}
+    section{padding:64px 0;}
+    .container{padding:0 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="#top" class="logo">Вайб<span>·</span>Код</a>
+    <ul class="menu" id="mainMenu">
+      <li><a href="#program">Программа</a></li>
+      <li><a href="#format">Формат</a></li>
+      <li><a href="#coaches">Коучи</a></li>
+      <li><a href="#pricing">Тарифы</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#signup" class="btn btn-primary">Записаться</a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainMenu" aria-label="Открыть меню">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Школа вайб-кодинга</p>
+        <h1>Создавайте сайты, ботов и сервисы вместе с ИИ</h1>
+        <p class="sub">Без глубокого изучения программирования. Диалог с ИИ-ассистентом, понятные задания и коуч рядом — от идеи до готового проекта.</p>
+        <div class="badges">
+          <span class="badge">Возраст 20–75 лет</span>
+          <span class="badge">Онлайн + офлайн</span>
+        </div>
+        <div class="hero-ctas">
+          <a href="#signup" class="btn btn-primary">Бесплатное пробное занятие</a>
+          <a href="#program" class="btn btn-outline">Смотреть программу</a>
+        </div>
+      </div>
+      <div class="chat-card" aria-hidden="true">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="bubble user">
+          <span class="tag">Вы</span>
+          Хочу сайт-визитку для своей мастерской, с формой заявки.
+        </div>
+        <div class="bubble ai">
+          <span class="tag">ИИ-ассистент</span>
+          Отлично! Сделаю структуру из 4 блоков и форму с валидацией. Показать макет?
+        </div>
+        <div class="bubble user">
+          <span class="tag">Вы</span>
+          Да, и добавь тёплые бежевые тона.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ДЛЯ КОГО -->
+  <section class="stripe">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Для кого</p>
+        <h2>Программа подходит трём поколениям</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="icon-circle">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></svg>
+          </div>
+          <h3>20–35 лет</h3>
+          <p>Старт карьеры, портфолио, пет-проекты.</p>
+          <p><strong>Соберите свой продукт и усильте резюме.</strong></p>
+        </div>
+        <div class="card">
+          <div class="icon-circle">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 11-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.55-1H3a2 2 0 110-4h.09A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06A1.7 1.7 0 009 4.6a1.7 1.7 0 001-1.55V3a2 2 0 114 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9c.14.36.5.86 1 1H21a2 2 0 110 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
+          </div>
+          <h3>36–55 лет</h3>
+          <p>Автоматизация работы и бизнеса.</p>
+          <p><strong>Внутренние инструменты без найма разработчиков.</strong></p>
+        </div>
+        <div class="card">
+          <div class="icon-circle">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <h3>56–75 лет</h3>
+          <p>Освоение технологий в комфортном темпе.</p>
+          <p><strong>Спокойный темп и терпеливые коучи.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПРОГРАММА -->
+  <section id="program">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Программа</p>
+        <h2>Шесть модулей от идеи до демо-дня</h2>
+      </div>
+      <div class="program-grid">
+        <div class="module">
+          <div class="num">01</div>
+          <div><h4>Мышление вайб-кодера</h4><p>Идея, чёткое задание, диалог с ИИ.</p></div>
+        </div>
+        <div class="module">
+          <div class="num">02</div>
+          <div><h4>Инструменты</h4><p>Обзор и настройка ИИ-ассистентов и сред разработки.</p></div>
+        </div>
+        <div class="module">
+          <div class="num">03</div>
+          <div><h4>Первый проект</h4><p>Лендинг или Telegram-бот на занятии с публикацией.</p></div>
+        </div>
+        <div class="module">
+          <div class="num">04</div>
+          <div><h4>Данные и логика</h4><p>Формы, таблицы, простые базы, внешние сервисы.</p></div>
+        </div>
+        <div class="module">
+          <div class="num">05</div>
+          <div><h4>Отладка и доработка</h4><p>Исправление ошибок с ИИ, улучшение дизайна.</p></div>
+        </div>
+        <div class="module">
+          <div class="num">06</div>
+          <div><h4>Запуск и демо-день</h4><p>Публикация и презентация финального проекта.</p></div>
+        </div>
+      </div>
+      <div class="program-meta">
+        <div><strong>Длительность</strong>8 недель<!-- заполнить: длительность курса --></div>
+        <div><strong>Занятия</strong>2 раза в неделю по 2 часа<!-- заполнить: частота и продолжительность --></div>
+        <div><strong>Формат</strong>Гибрид: онлайн + офлайн-практикумы</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФОРМАТ -->
+  <section class="stripe" id="format">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Формат</p>
+        <h2>Онлайн и офлайн — как удобно вам</h2>
+      </div>
+      <div class="format-grid">
+        <div class="format-card">
+          <h3>Онлайн</h3>
+          <p>Живые занятия с записью и чат группы с коучем.</p>
+          <ul>
+            <li>Занятия в Zoom с записью</li>
+            <li>Чат группы и обратная связь коуча</li>
+            <li>Доступ к материалам без ограничения по времени</li>
+          </ul>
+        </div>
+        <div class="format-card">
+          <h3>Офлайн</h3>
+          <p>Практикумы в классе в малых группах.</p>
+          <ul>
+            <li>Адрес класса: [АДРЕС]<!-- заполнить: адрес класса --></li>
+            <li>Малые группы: до 8 человек<!-- заполнить: максимальный размер группы --></li>
+            <li>Личная помощь коуча на месте</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КОУЧИ -->
+  <section id="coaches">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Коучи</p>
+        <h2>Учат терпеливо и по делу</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="avatar">А.И.</div>
+          <div class="coach-role">Ведущий коуч</div>
+          <h3>Имя Фамилия</h3>
+          <p>Описание опыта коуча: сколько лет в разработке, какие проекты вёл, чем силён в преподавании.<!-- заполнить: имя, фото, роль, опыт --></p>
+        </div>
+        <div class="card">
+          <div class="avatar">М.С.</div>
+          <div class="coach-role">Коуч по продукту</div>
+          <h3>Имя Фамилия</h3>
+          <p>Описание опыта коуча: сколько лет в разработке, какие проекты вёл, чем силён в преподавании.<!-- заполнить --></p>
+        </div>
+        <div class="card">
+          <div class="avatar">Т.Н.</div>
+          <div class="coach-role">Коуч по дизайну</div>
+          <h3>Имя Фамилия</h3>
+          <p>Описание опыта коуча: сколько лет в разработке, какие проекты вёл, чем силён в преподавании.<!-- заполнить --></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ТАРИФЫ -->
+  <section class="stripe" id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Тарифы</p>
+        <h2>Выберите, как вам удобнее учиться</h2>
+      </div>
+      <div class="grid-3">
+        <div class="price-card" data-tariff="Старт">
+          <h3>Старт</h3>
+          <p>Онлайн, в группе</p>
+          <div class="price">14 900 ₽<small> / курс</small></div>
+          <ul>
+            <li>Живые занятия</li>
+            <li>Записи занятий</li>
+            <li>Чат с коучем</li>
+            <li>Финальный проект</li>
+          </ul>
+          <button class="btn btn-outline select-btn" type="button">Выбрать тариф</button>
+        </div>
+        <div class="price-card popular" data-tariff="Стандарт">
+          <span class="price-tag">Популярный</span>
+          <h3>Стандарт</h3>
+          <p>Гибрид: онлайн + офлайн</p>
+          <div class="price">24 900 ₽<small> / курс</small></div>
+          <ul>
+            <li>Всё из тарифа «Старт»</li>
+            <li>Офлайн-практикумы</li>
+            <li>Проверка проектов коучем</li>
+            <li>Демо-день</li>
+          </ul>
+          <button class="btn btn-primary select-btn" type="button">Выбрать тариф</button>
+        </div>
+        <div class="price-card" data-tariff="Персональный">
+          <h3>Персональный</h3>
+          <p>Один на один с коучем</p>
+          <div class="price">39 900 ₽<small> / курс</small></div>
+          <ul>
+            <li>Индивидуальный план</li>
+            <li>Гибкий график</li>
+            <li>Онлайн или офлайн</li>
+            <li>Помощь с личным проектом</li>
+          </ul>
+          <button class="btn btn-outline select-btn" type="button">Выбрать тариф</button>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:24px;font-size:14px;">Цены — ориентировочные, уточняются перед запуском.<!-- заполнить: финальные цены --></p>
+    </div>
+  </section>
+
+  <!-- ОТЗЫВЫ -->
+  <section id="reviews">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Отзывы</p>
+        <h2>Что говорят студенты</h2>
+      </div>
+      <div class="grid-3">
+        <div class="review-card">
+          <div class="review-head">
+            <div class="avatar">Е.П.</div>
+            <div class="review-meta"><strong>Елена, 29 лет</strong><span>Онлайн, тариф «Стандарт»</span></div>
+          </div>
+          <p class="quote">«За два месяца собрала сайт для своего маленького бизнеса. Раньше казалось, что это невозможно без программиста.»<!-- заполнить: реальный отзыв --></p>
+        </div>
+        <div class="review-card">
+          <div class="review-head">
+            <div class="avatar">И.К.</div>
+            <div class="review-meta"><strong>Игорь, 47 лет</strong><span>Гибрид, тариф «Персональный»</span></div>
+          </div>
+          <p class="quote">«Сделал внутреннего Telegram-бота для команды — экономим часы каждую неделю.»<!-- заполнить: реальный отзыв --></p>
+        </div>
+        <div class="review-card">
+          <div class="review-head">
+            <div class="avatar">В.С.</div>
+            <div class="review-meta"><strong>Валентина, 63 года</strong><span>Офлайн, тариф «Старт»</span></div>
+          </div>
+          <p class="quote">«Коучи объясняли спокойно и без спешки, я не боялась задавать «глупые» вопросы.»<!-- заполнить: реальный отзыв --></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="stripe" id="faq">
+    <div class="container" style="max-width:820px;">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2>Частые вопросы</h2>
+      </div>
+      <div id="faqList">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Мне уже за 60 — точно получится?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Да. Мы принимаем студентов от 20 до 75 лет, занятия идут в комфортном темпе, коучи объясняют без спешки и повторяют материал столько, сколько нужно.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Нужно ли уметь программировать?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Нет, программа рассчитана на людей без опыта разработки. Вы работаете в диалоге с ИИ-ассистентом, а коуч помогает с постановкой задач.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Можно ли совмещать онлайн и офлайн?</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNUP -->
+  <section id="signup">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Запись</p>
+        <h2>Записаться на бесплатное пробное занятие</h2>
+      </div>
+      <div class="signup-wrap">
+        <div>
+          <h3>Что дальше?</h3>
+          <p>Коуч свяжется с вами в течение рабочего дня, ответит на вопросы и подберёт удобное время для пробного занятия.</p>
+          <p>Оставляя заявку, вы не берёте на себя обязательств — тариф можно изменить позже.</p>
+        </div>
+        <form id="signupForm" novalidate>
+          <div class="tariff-box">
+            <span>Выбранный тариф: <strong id="tariffLabel">не выбран</strong></span>
+            <button type="button" id="changeTariff">изменить</button>
+          </div>
+          <div class="field">
+            <label for="fName">Имя</label>
+            <input type="text" id="fName" name="name" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="fAge">Возраст</label>
+            <input type="number" id="fAge" name="age" min="1" max="120">
+          </div>
+          <div class="field">
+            <label for="fContact">Телефон или Telegram</label>
+            <input type="text" id="fContact" name="contact" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label id="formatLabel">Формат обучения</label>
+            <div class="radio-row" role="radiogroup" aria-labelledby="formatLabel">
+              <span class="radio-pill">
+                <input type="radio" id="fmtOnline" name="format" value="Онлайн">
+                <label for="fmtOnline">Онлайн</label>
+              </span>
+              <span class="radio-pill">
+                <input type="radio" id="fmtOffline" name="format" value="Офлайн">
+                <label for="fmtOffline">Офлайн</label>
+              </span>
+              <span class="radio-pill">
+                <input type="radio" id="fmtHybrid" name="format" value="Гибрид" checked>
+                <label for="fmtHybrid">Гибрид</label>
+              </span>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">Отправить заявку</button>
+          <p id="formMessage" role="alert" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- КОНТАКТЫ -->
+  <section class="contacts-section" id="contacts">
+    <div class="container">
+      <div class="contact-grid">
+        <div>
+          <p class="eyebrow">Контакты</p>
+          <h2>Готовы ответить на ваши вопросы</h2>
+          <ul class="contact-list">
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:2px;"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.7A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8.1 9.7a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.9 2.2z"/></svg>
+              <span>Телефон<br><a href="tel:+70000000000">+7 (000) 000-00-00</a><!-- заполнить: телефон --></span>
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:2px;"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+              <span>Email<br><a href="mailto:hello@vibecode.school">hello@vibecode.school</a><!-- заполнить: email --></span>
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:2px;"><path d="M12 22s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <span>Адрес класса<br>[АДРЕС]<!-- заполнить: адрес --></span>
+            </li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+              <span>Часы работы<br>Пн–Сб, 10:00–19:00<!-- заполнить: часы работы --></span>
+            </li>
+          </ul>
+          <div class="social-row">
+            <a class="social-btn" href="#" target="_blank" rel="noopener"><!-- заполнить: ссылка Telegram -->Telegram</a>
+            <a class="social-btn" href="#" target="_blank" rel="noopener"><!-- заполнить: ссылка Instagram -->Instagram</a>
+            <a class="social-btn" href="#" target="_blank" rel="noopener"><!-- заполнить: ссылка YouTube -->YouTube</a>
+          </div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);">
+          <h3 style="color:#fff;">Ещё не решили с тарифом?</h3>
+          <p style="color:#E8DCC8;">Запишитесь на пробное занятие — коуч поможет выбрать формат и тариф по итогам разговора.</p>
+          <a href="#signup" class="btn btn-primary">Записаться бесплатно</a>
+        </div>
+      </div>
+      <footer>
+        <span>© 2026 Школа «Вайб·Код». Все права защищены.</span>
+        <a href="#top" class="back-to-top">Наверх ↑</a>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const mainMenu = document.getElementById('mainMenu');
+  menuToggle.addEventListener('click', () => {
+    const isOpen = mainMenu.style.display === 'flex';
+    mainMenu.style.display = isOpen ? 'none' : 'flex';
+    mainMenu.style.flexDirection = 'column';
+    menuToggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+  mainMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    if (window.innerWidth <= 900) { mainMenu.style.display = 'none'; menuToggle.setAttribute('aria-expanded','false'); }
+  }));
+
+  // FAQ accordion — one open at a time
+  const faqButtons = document.querySelectorAll('.faq-q');
+  faqButtons.forEach(btn => {
+    if (!btn.nextElementSibling || !btn.nextElementSibling.classList.contains('faq-a')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'faq-a';
+      const p = document.createElement('p');
+      p.textContent = 'Да, многие студенты сочетают онлайн-занятия и офлайн-практикумы в удобном для себя ритме.';
+      wrap.appendChild(p);
+      btn.after(wrap);
+    }
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      faqButtons.forEach(other => {
+        other.setAttribute('aria-expanded', 'false');
+        other.nextElementSibling.style.maxHeight = null;
+      });
+      if (!expanded) {
+        btn.setAttribute('aria-expanded', 'true');
+        const answer = btn.nextElementSibling;
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Pricing selection
+  const priceCards = document.querySelectorAll('.price-card');
+  const tariffLabel = document.getElementById('tariffLabel');
+  function selectTariff(card) {
+    priceCards.forEach(c => {
+      c.classList.remove('selected');
+      const btn = c.querySelector('.select-btn');
+      btn.textContent = 'Выбрать тариф';
+      btn.classList.remove('btn-dark');
+      btn.classList.add(c.classList.contains('popular') ? 'btn-primary' : 'btn-outline');
+    });
+    card.classList.add('selected');
+    const selBtn = card.querySelector('.select-btn');
+    selBtn.textContent = 'Выбрано ✓';
+    selBtn.classList.remove('btn-primary','btn-outline');
+    selBtn.classList.add('btn-dark');
+    tariffLabel.textContent = card.dataset.tariff;
+  }
+  priceCards.forEach(card => {
+    card.querySelector('.select-btn').addEventListener('click', () => {
+      selectTariff(card);
+      document.getElementById('signup').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+  document.getElementById('changeTariff').addEventListener('click', () => {
+    document.getElementById('pricing').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  // Signup form validation
+  const form = document.getElementById('signupForm');
+  const message = document.getElementById('formMessage');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const age = form.age.value.trim();
+    const contact = form.contact.value.trim();
+
+    message.className = '';
+    if (!name || !age || !contact) {
+      message.textContent = 'Пожалуйста, заполните имя, возраст и контакт';
+      message.className = 'error';
+      message.setAttribute('role','alert');
+      return;
+    }
+    const ageNum = Number(age);
+    if (ageNum < 20 || ageNum > 75) {
+      message.textContent = 'К сожалению, мы принимаем студентов только в возрасте от 20 до 75 лет';
+      message.className = 'error';
+      message.setAttribute('role','alert');
+      return;
+    }
+    message.textContent = `Спасибо, ${name}! Заявка принята, коуч свяжется с вами в ближайшее время.`;
+    message.className = 'success';
+    message.setAttribute('role','status');
+    form.reset();
+    document.getElementById('fmtHybrid').checked = true;
+  });
+</script>
+</body>
+</html>
